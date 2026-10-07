@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: rag-document-assistant
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+
+server:
+  port: 8080
+  tomcat:
+    # Permite que Tomcat lea el archivo completo y Spring muestre un mensaje claro si excede el límite.
+    max-swallow-size: 50MB
+
+rag:
+  ollama:
+    base-url: ${OLLAMA_BASE_URL:http://localhost:11434}
+    chat-model: ${OLLAMA_CHAT_MODEL:llama3.2}
+    embedding-model: ${OLLAMA_EMBEDDING_MODEL:nomic-embed-text}
+    temperature: 0.2
+    timeout: 180s
+  ingestion:
+    # Tamaño máximo de cada fragmento y solapamiento entre fragmentos, en caracteres.
+    chunk-size: 800
+    chunk-overlap: 120
+    # Cantidad de fragmentos enviados a Ollama por cada solicitud de embeddings.
+    embedding-batch-size: 32
+  retrieval:
+    max-results: 5
+    # Puntaje mínimo de relevancia (0 a 1) para considerar un fragmento como fuente.
+    min-score: 0.6
+
+logging:
+  level:
+    com.wilsonleal.ragassistant: INFO

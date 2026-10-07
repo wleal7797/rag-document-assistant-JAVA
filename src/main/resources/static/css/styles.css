@@ -1,0 +1,655 @@
+/*
+ * Asistente documental: estilo inspirado en manuales técnicos impresos.
+ * Papel azul grisáceo, tinta azul marino, pestañas de índice para las páginas
+ * citadas y resaltador amarillo para los extractos usados como fuente.
+ */
+:root {
+    --paper: #edf0f3;
+    --surface: #ffffff;
+    --ink: #15222e;
+    --steel: #5a6876;
+    --rule: #c9d1d9;
+    --blueprint: #1d5aa6;
+    --blueprint-dark: #164781;
+    --marker: #ffe17a;
+    --danger: #b3261e;
+    --success: #1e6b45;
+
+    --font-ui: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+    --font-read: "Source Serif 4", Georgia, "Times New Roman", serif;
+
+    --step--1: 0.8125rem;
+    --step-0: 1rem;
+    --step-1: 1.25rem;
+    --step-2: 1.75rem;
+    --step-3: 2.5rem;
+
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.5rem;
+    --space-6: 2.25rem;
+
+    --radius: 6px;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-ui);
+    font-size: var(--step-0);
+    line-height: 1.5;
+}
+
+h1, h2, h3 {
+    margin: 0;
+    line-height: 1.2;
+    font-weight: 600;
+}
+
+a {
+    color: var(--blueprint);
+}
+
+:focus-visible {
+    outline: 3px solid var(--blueprint);
+    outline-offset: 2px;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+/* ---------- Encabezado ---------- */
+.site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-3) var(--space-5);
+    background: var(--ink);
+    color: #fff;
+}
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: inherit;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.brand-mark {
+    width: 28px;
+    height: 28px;
+    color: var(--marker);
+}
+
+.site-nav {
+    display: flex;
+    gap: var(--space-1);
+}
+
+.site-nav a {
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius);
+    color: #c8d3de;
+    text-decoration: none;
+}
+
+.site-nav a:hover {
+    color: #fff;
+}
+
+.site-nav a.is-active {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+}
+
+/* ---------- Botones ---------- */
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+    font: inherit;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.button:disabled {
+    cursor: progress;
+    opacity: 0.75;
+}
+
+.button-primary {
+    background: var(--blueprint);
+    color: #fff;
+}
+
+.button-primary:hover:not(:disabled) {
+    background: var(--blueprint-dark);
+}
+
+.button-secondary {
+    background: var(--surface);
+    border-color: var(--rule);
+    color: var(--ink);
+}
+
+.button-secondary:hover {
+    border-color: var(--steel);
+}
+
+.button-ghost {
+    background: none;
+    color: var(--steel);
+    padding-inline: var(--space-2);
+}
+
+.button-ghost:hover {
+    color: var(--ink);
+}
+
+.button-danger {
+    background: none;
+    border-color: transparent;
+    color: var(--danger);
+}
+
+.button-danger:hover {
+    border-color: var(--danger);
+}
+
+/* ---------- Alertas ---------- */
+.alerts:empty {
+    display: none;
+}
+
+.alert {
+    margin: 0 0 var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    border-left: 4px solid;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    background: var(--surface);
+}
+
+.alert-success {
+    border-color: var(--success);
+}
+
+.alert-error {
+    border-color: var(--danger);
+    color: var(--danger);
+}
+
+/* ---------- Diseño del chat ---------- */
+.chat-layout {
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+    min-height: calc(100vh - 64px);
+}
+
+.library {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding: var(--space-5);
+    border-right: 1px solid var(--rule);
+    background: var(--surface);
+}
+
+.library h2 {
+    font-size: var(--step-1);
+}
+
+.library-summary,
+.library-empty {
+    margin: 0;
+    color: var(--steel);
+    font-size: var(--step--1);
+}
+
+.library-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.library-list a {
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-2) var(--space-3);
+    border-left: 3px solid transparent;
+    color: var(--ink);
+    text-decoration: none;
+}
+
+.library-list a:hover {
+    background: var(--paper);
+}
+
+.library-list a.is-selected {
+    border-left-color: var(--blueprint);
+    background: var(--paper);
+}
+
+.library-name {
+    overflow-wrap: anywhere;
+    font-weight: 500;
+}
+
+.library-meta {
+    color: var(--steel);
+    font-size: var(--step--1);
+}
+
+.conversation {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 52rem;
+    margin: 0 auto;
+    padding: var(--space-6) var(--space-5) 0;
+}
+
+.intro {
+    max-width: 38rem;
+    margin-bottom: var(--space-6);
+}
+
+.intro h1 {
+    margin-bottom: var(--space-3);
+    font-size: var(--step-3);
+    letter-spacing: -0.02em;
+}
+
+.intro p {
+    color: var(--steel);
+}
+
+.exchanges {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    margin: 0 0 var(--space-6);
+    padding: 0;
+    list-style: none;
+}
+
+.exchange {
+    scroll-margin-top: var(--space-5);
+}
+
+.question {
+    max-width: 85%;
+    margin: 0 0 var(--space-4) auto;
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius) var(--radius) 0 var(--radius);
+    background: var(--ink);
+    color: #fff;
+    white-space: pre-line;
+}
+
+.answer-meta {
+    margin: 0 0 var(--space-2);
+    color: var(--steel);
+    font-size: var(--step--1);
+}
+
+.answer-body {
+    max-width: 68ch;
+    font-family: var(--font-read);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    white-space: pre-line;
+}
+
+/* ---------- Fuentes: el elemento distintivo ---------- */
+.sources {
+    margin-top: var(--space-5);
+}
+
+.sources h3 {
+    margin-bottom: var(--space-3);
+    font-size: var(--step-0);
+}
+
+.source-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.source {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--space-3);
+    margin-right: 3.25rem;
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius) 0 0 var(--radius);
+    background: var(--surface);
+}
+
+.source-ref {
+    color: var(--blueprint);
+    font-weight: 600;
+}
+
+.source-body p {
+    margin: 0;
+}
+
+.source-file {
+    font-weight: 500;
+    overflow-wrap: anywhere;
+}
+
+.source-excerpt {
+    margin-block: var(--space-1) !important;
+    font-family: var(--font-read);
+    line-height: 1.6;
+}
+
+.source-excerpt mark {
+    background: linear-gradient(transparent 12%, var(--marker) 12%, var(--marker) 88%, transparent 88%);
+    color: inherit;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    padding-inline: 2px;
+}
+
+.source-score {
+    color: var(--steel);
+    font-size: var(--step--1);
+}
+
+/* Pestaña de índice que sobresale del borde, como en un manual impreso. */
+.page-tab {
+    position: absolute;
+    top: -1px;
+    right: -3.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.25rem;
+    min-height: 2.5rem;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    background: var(--blueprint);
+    color: #fff;
+    font-size: var(--step--1);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Formulario de pregunta ---------- */
+.composer {
+    position: sticky;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin-top: auto;
+    padding: var(--space-4) 0 var(--space-5);
+    background: linear-gradient(to bottom, rgba(237, 240, 243, 0), var(--paper) 18%);
+}
+
+.composer-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+}
+
+.composer-scope {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--steel);
+    font-size: var(--step--1);
+}
+
+select,
+textarea {
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--ink);
+    font: inherit;
+}
+
+select {
+    max-width: 18rem;
+    padding: var(--space-1) var(--space-2);
+}
+
+textarea {
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    resize: vertical;
+}
+
+textarea[aria-invalid="true"] {
+    border-color: var(--danger);
+}
+
+.field-error {
+    margin: 0;
+    color: var(--danger);
+    font-size: var(--step--1);
+}
+
+.composer-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* ---------- Página de documentos ---------- */
+.documents {
+    max-width: 60rem;
+    margin: 0 auto;
+    padding: var(--space-6) var(--space-5);
+}
+
+.documents h1 {
+    margin-bottom: var(--space-2);
+    font-size: var(--step-3);
+    letter-spacing: -0.02em;
+}
+
+.lead {
+    max-width: 40rem;
+    margin: 0 0 var(--space-5);
+    color: var(--steel);
+}
+
+.upload {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+    margin-bottom: var(--space-6);
+}
+
+.dropzone {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    width: 100%;
+    padding: var(--space-5);
+    border: 2px dashed var(--rule);
+    border-radius: var(--radius);
+    background: var(--surface);
+    cursor: pointer;
+}
+
+.dropzone:hover,
+.dropzone:focus-within {
+    border-color: var(--blueprint);
+}
+
+.dropzone input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.dropzone-title {
+    font-weight: 600;
+}
+
+.dropzone-hint,
+.dropzone-file {
+    color: var(--steel);
+    font-size: var(--step--1);
+}
+
+.dropzone-file {
+    color: var(--blueprint);
+    font-weight: 500;
+}
+
+.document-table h2 {
+    margin-bottom: var(--space-3);
+    font-size: var(--step-1);
+}
+
+.table-scroll {
+    overflow-x: auto;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    background: var(--surface);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--rule);
+    text-align: left;
+    vertical-align: middle;
+}
+
+thead th {
+    color: var(--steel);
+    font-size: var(--step--1);
+    font-weight: 500;
+}
+
+tbody tr:last-child th,
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+tbody th {
+    font-weight: 500;
+    overflow-wrap: anywhere;
+}
+
+.num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-2);
+}
+
+.actions form {
+    margin: 0;
+}
+
+/* ---------- Adaptación a móviles ---------- */
+@media (max-width: 820px) {
+    .chat-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .library {
+        border-right: none;
+        border-bottom: 1px solid var(--rule);
+    }
+
+    .library-list {
+        flex-direction: row;
+        overflow-x: auto;
+    }
+
+    .library-list a {
+        min-width: 12rem;
+    }
+
+    .conversation,
+    .documents {
+        padding-inline: var(--space-4);
+    }
+
+    .intro h1,
+    .documents h1 {
+        font-size: var(--step-2);
+    }
+
+    .question {
+        max-width: 100%;
+    }
+
+    .site-header {
+        padding-inline: var(--space-4);
+    }
+
+    .brand span {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    html {
+        scroll-behavior: smooth;
+    }
+}

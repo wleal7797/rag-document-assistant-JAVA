@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head('Error')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header('')}"></header>
+<main class="documents">
+    <h1 th:text="${status == 404} ? 'Página no encontrada' : 'Algo falló'">Algo falló</h1>
+    <p class="lead" th:if="${status == 404}">La dirección que abriste no existe.</p>
+    <p class="lead" th:unless="${status == 404}">
+        La solicitud no se pudo completar (código <span th:text="${status}">500</span>).
+        Revisa los registros de la aplicación para ver el detalle.
+    </p>
+    <a class="button button-primary" th:href="@{/chat}">Volver al asistente</a>
+</main>
+</body>
+</html>

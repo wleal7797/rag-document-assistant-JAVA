@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head('Documentos')}"></head>
+<body class="page-documents">
+<header th:replace="~{fragments/layout :: header('documents')}"></header>
+
+<main class="documents" id="contenido">
+    <h1>Documentos</h1>
+    <p class="lead">Sube manuales, fichas técnicas o procedimientos en PDF. El asistente los divide en fragmentos y los indexa para responder preguntas.</p>
+
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+
+    <form class="upload" th:action="@{/documents}" method="post" enctype="multipart/form-data"
+          data-busy-label="Procesando documento…">
+        <label class="dropzone" for="file">
+            <span class="dropzone-title">Elige un PDF o arrástralo aquí</span>
+            <span class="dropzone-hint">Máximo 20 MB. Debe tener texto seleccionable; los escaneos sin OCR no se pueden leer.</span>
+            <span class="dropzone-file" data-file-name>Ningún archivo seleccionado</span>
+            <input type="file" id="file" name="file" accept=".pdf,application/pdf" required>
+        </label>
+        <button type="submit" class="button button-primary" data-submit>Subir y procesar</button>
+    </form>
+
+    <section class="document-table" aria-labelledby="indexed-title">
+        <h2 id="indexed-title">Indexados</h2>
+        <p class="library-empty" th:if="${documents.isEmpty()}">Todavía no has subido documentos.</p>
+        <div class="table-scroll" th:if="${!documents.isEmpty()}">
+            <table>
+                <thead>
+                <tr>
+                    <th scope="col">Documento</th>
+                    <th scope="col" class="num">Páginas</th>
+                    <th scope="col" class="num">Fragmentos</th>
+                    <th scope="col" class="num">Tamaño</th>
+                    <th scope="col">Cargado</th>
+                    <th scope="col"><span class="visually-hidden">Acciones</span></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="doc : ${documents}">
+                    <th scope="row" th:text="${doc.fileName()}">manual.pdf</th>
+                    <td class="num" th:text="${doc.pageCount()}">12</td>
+                    <td class="num" th:text="${doc.chunkCount()}">40</td>
+                    <td class="num" th:text="${doc.formattedSize()}">1,2 MB</td>
+                    <td th:text="${doc.uploadedAtLabel()}">1 oct 2026, 10:00</td>
+                    <td class="actions">
+                        <a class="button button-secondary" th:href="@{/chat(documento=${doc.id()})}">Preguntar</a>
+                        <form th:action="@{/documents/{id}/delete(id=${doc.id()})}" method="post"
+                              data-confirm="¿Eliminar este documento y todos sus fragmentos?">
+                            <button type="submit" class="button button-danger">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+</body>
+</html>

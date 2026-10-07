@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head('Preguntar')}"></head>
+<body class="page-chat">
+<header th:replace="~{fragments/layout :: header('chat')}"></header>
+
+<div class="chat-layout">
+    <aside class="library" aria-labelledby="library-title">
+        <h2 id="library-title">Biblioteca</h2>
+        <p class="library-summary" th:if="${!documents.isEmpty()}"
+           th:text="${documents.size() == 1} ? '1 documento indexado' : ${documents.size()} + ' documentos indexados'">
+            0 documentos indexados
+        </p>
+        <ul class="library-list" th:if="${!documents.isEmpty()}">
+            <li th:each="doc : ${documents}">
+                <a th:href="@{/chat(documento=${doc.id()})}"
+                   th:classappend="${doc.id() == questionForm.documentId} ? 'is-selected'">
+                    <span class="library-name" th:text="${doc.fileName()}">manual.pdf</span>
+                    <span class="library-meta" th:text="${doc.pageCount()} + ' páginas'">12 páginas</span>
+                </a>
+            </li>
+        </ul>
+        <p class="library-empty" th:if="${documents.isEmpty()}">
+            Aún no hay documentos. Sube manuales o fichas técnicas en PDF para empezar.
+        </p>
+        <a class="button button-secondary" th:href="@{/documents}">Gestionar documentos</a>
+    </aside>
+
+    <main class="conversation" id="contenido">
+        <div th:replace="~{fragments/layout :: alerts}"></div>
+
+        <section class="intro" th:if="${history.isEmpty()}">
+            <h1>Pregúntale a tus manuales</h1>
+            <p th:if="${!documents.isEmpty()}">
+                Escribe una pregunta en lenguaje natural. Cada respuesta indica el documento y la página
+                de donde salió la información, para que puedas verificarla.
+            </p>
+            <p th:if="${documents.isEmpty()}">
+                Primero <a th:href="@{/documents}">sube un PDF</a>. Después podrás preguntar, por ejemplo,
+                cuál es el procedimiento de arranque de un equipo o qué dice una ficha técnica sobre la
+                temperatura de operación.
+            </p>
+        </section>
+
+        <ol class="exchanges" th:if="${!history.isEmpty()}">
+            <li class="exchange" th:each="item, status : ${history}"
+                th:id="${status.last} ? 'respuesta-reciente' : null">
+                <p class="question" th:text="${item.question()}">¿Cuál es la presión máxima de trabajo?</p>
+
+                <div class="answer">
+                    <p class="answer-meta">
+                        <span th:text="${item.scopeLabel()}">Todos los documentos</span>,
+                        <time th:text="${item.askedAtLabel()}">10:42</time>,
+                        respondido en <span th:text="${item.elapsedLabel()}">3,2 s</span>
+                    </p>
+                    <div class="answer-body" th:text="${item.answer()}">Respuesta</div>
+
+                    <section class="sources" th:if="${item.hasSources()}" aria-label="Fuentes consultadas">
+                        <h3>Fuentes</h3>
+                        <ol class="source-list">
+                            <li class="source" th:each="src, s : ${item.sources()}">
+                                <span class="source-ref" th:text="'[' + ${s.count} + ']'">[1]</span>
+                                <div class="source-body">
+                                    <p class="source-file" th:text="${src.fileName()}">manual.pdf</p>
+                                    <p class="source-excerpt"><mark th:text="${src.excerpt()}">Extracto</mark></p>
+                                    <p class="source-score" th:text="'Relevancia ' + ${src.scorePercent()} + ' %'">Relevancia 82 %</p>
+                                </div>
+                                <span class="page-tab" th:text="'p. ' + ${src.page()}">p. 4</span>
+                            </li>
+                        </ol>
+                    </section>
+                </div>
+            </li>
+        </ol>
+
+        <form class="composer" th:action="@{/chat}" th:object="${questionForm}" method="post" data-busy-label="Buscando respuesta…">
+            <div class="composer-row">
+                <label class="composer-scope">
+                    <span>Buscar en</span>
+                    <select th:field="*{documentId}" th:disabled="${documents.isEmpty()}">
+                        <option value="">Todos los documentos</option>
+                        <option th:each="doc : ${documents}" th:value="${doc.id()}" th:text="${doc.fileName()}">manual.pdf</option>
+                    </select>
+                </label>
+                <button type="submit" class="button button-ghost" form="clear-form"
+                        th:if="${!history.isEmpty()}">Borrar conversación</button>
+            </div>
+            <label for="question" class="visually-hidden">Tu pregunta</label>
+            <textarea id="question" th:field="*{question}" rows="3" maxlength="1000"
+                      placeholder="Escribe tu pregunta. Ctrl + Enter para enviar."
+                      th:attr="aria-invalid=${#fields.hasErrors('question')} ? 'true' : null"
+                      aria-describedby="question-error"></textarea>
+            <p class="field-error" id="question-error" th:if="${#fields.hasErrors('question')}" th:errors="*{question}">Error</p>
+            <div class="composer-actions">
+                <button type="submit" class="button button-primary" data-submit>Preguntar</button>
+            </div>
+        </form>
+        <form id="clear-form" th:action="@{/chat/clear}" method="post" hidden></form>
+    </main>
+</div>
+</body>
+</html>
